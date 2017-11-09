@@ -1,0 +1,114 @@
+<include file="public@header"/>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="img[]" value="{filepath}">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+</head>
+<body>
+    <div class="wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#" data-toggle="tab">添加求助信息</a></li>
+        </ul>
+        <form method="post" class="form-horizontal js-ajax-form" action="{:url('AdminSeekHelp/add')}">
+            <div class="form-group">
+                <label for="input-to" class="col-sm-2 control-label"><span class="form-required">*</span>联系人</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-subject" class="col-sm-2 control-label"><span class="form-required">*</span>手机号</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="mobile" class="form-control" name="mobile">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label">公司单位</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="company">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>详细地址</label>
+                <div class="col-md-6 col-sm-10">
+                    <textarea class="form-control" name="address"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>求助说明</label>
+                <div class="col-md-6 col-sm-10">
+                    <textarea class="form-control" name="content"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label">上传凭证</label>
+                <div class="col-md-2 col-sm-4">
+                    <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"><span class="btn btn-primary">点击上传图片</span></a>
+                </div>
+                <div class="col-md-6 col-sm-10">
+                    <ul id="photos" class="pic-list list-unstyled form-inline">
+                        <notempty name="post.more.photos">
+                            <foreach name="post.more.photos" item="vo">
+                                <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
+                                <li id="saved-image{$key}">
+                                    <input id="photo-{$key}" type="hidden" name="img[]"
+                                           value="{$vo.url}">
+                                    <img id="photo-{$key}-preview"
+                                         src="{:cmf_get_image_preview_url($vo['url'])}"
+                                         style="height:36px;width: 36px;"
+                                         onclick="parent.imagePreviewDialog(this.src);">
+                                    <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                    <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                </li>
+                            </foreach>
+                        </notempty>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label">是否已发货</label>
+                <div class="col-md-2 col-sm-4">
+                    <select id="isfh" class="form-control" style="width: 150px;" name="status">
+         　　　　　　　　<option value='3'>待发货</option>
+         　　　　　　　　<option value='4'>已发货</option>
+        　　　　　　</select>
+                </div>
+            </div>
+            <div class="form-group" id="weight" style="display: none;">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>发货重量</label>
+                <div class="col-md-2 col-sm-4">
+                    <input type="text" class="form-control" name="weight">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label">备注</label>
+                <div class="col-md-6 col-sm-10">
+                    <textarea class="form-control" name="remarks"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                    <!-- <a href="{:url('AdminSeekHelp/index')}" class="btn btn-default">返回</a> -->
+                </div>
+            </div>
+        </form>
+    </div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    $('#isfh').change(function(){
+        if ($(this).val() == 4) {
+            $('#weight').show();
+        } else {
+            $('#weight').hide();
+        }
+    });
+</script>
+</body>
+</html>

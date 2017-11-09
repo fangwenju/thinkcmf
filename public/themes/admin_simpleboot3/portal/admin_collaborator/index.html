@@ -1,0 +1,70 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#" data-toggle="tab">推广伙伴列表</a></li>
+            <li><a href="{:url('AdminCollaborator/addPost')}">添加推广伙伴</a></li>
+        </ul>
+        <form class="well form-inline margin-top-20" method="post" action="{:url('AdminCollaborator/index')}">
+            伙伴名称:
+            <input type="text" class="form-control" name="user_login" style="width: 120px;" value="{:input('request.user_login/s','')}" placeholder="请输入名称">&nbsp;&nbsp;
+            联系电话:
+            <input type="text" class="form-control" name="mobile" style="width: 120px;" value="{:input('request.mobile/s','')}" placeholder="请输入联系电话">&nbsp;&nbsp;
+            <input type="submit" class="btn btn-primary" value="搜索" />
+            <a class="btn btn-danger" href="{:url('AdminCollaborator/index')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>推广伙伴名称</th>
+                    <th>联系电话</th>
+                    <th>联系邮箱</th>
+                    <th>开户银行</th>
+                    <th>银行卡账号</th>
+                    <th>推广二维码</th>
+                    <th>推广链接</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <php>
+                    $user_statuses=array("0"=>'已禁用',"1"=>'正常',"2"=>'未验证');
+                </php>
+                <foreach name="users" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.user_login}</td>
+                    <td>{$vo.mobile}</td>
+                    <td>{$vo.user_email}</td>
+                    <td>{$vo.bank_name}</td>
+                    <td>{$vo.bank_card}</td>
+                    <td><a href="javascript:parent.imagePreviewDialog('{:cmf_get_image_preview_url($vo.extension_qrcode)}');"><img src="{:cmf_get_image_preview_url($vo.extension_qrcode)}" style="height: 30px;"></a></td>
+                    <td><a href="{$vo.extension_url}" target="_blank">{$vo.extension_url}</a></td>
+                    <td>{$user_statuses[$vo['user_status']]}</td>
+                    <td>
+                        <neq name="vo.id" value="1">
+                            <empty name="vo.user_status">
+                                <a href="{:url('AdminCollaborator/cancelban',array('id'=>$vo['id']))}"
+                                   class="js-ajax-dialog-btn"
+                                   data-msg="您确定要启用此用户吗？">启用</a>
+                                <else/>
+                                <a href="{:url('AdminCollaborator/ban',array('id'=>$vo['id']))}" class="js-ajax-dialog-btn"
+                                   data-msg="您确定要禁用此用户吗？">禁用</a>
+                            </empty>
+                            <else/>
+                            <a style="color: #ccc;">禁用</a>
+                        </neq>
+                        <a href="{:url('AdminCollaborator/edit',array('id'=>$vo['id']))}">修改</a>
+                    </td>
+                </tr>
+                </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap">
+        <ul class="nav nav-tabs">
+            <li><a href="{:url('AdminCollaborator/index')}">推广伙伴列表</a></li>
+            <li class="active"><a href="#" data-toggle="tab">修改推广伙伴信息</a></li>
+        </ul>
+        <form method="post" class="form-horizontal js-ajax-form margin-top-20" action="{:url('AdminCollaborator/editPost')}">
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="form-required">*</span>推广伙伴</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="user_login" value="{$user.user_login|default=''}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="form-required">*</span>联系电话</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="mobile" value="{$user.mobile|default=''}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">联系邮箱</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="user_email" value="{$user.user_email|default=''}" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="form-required">*</span>开户银行</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="bank_name" value="{$user.bank_name|default=''}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label"><span class="form-required">*</span>银行卡号</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="bank_card" value="{$user.bank_card|default=''}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="hidden" name="id" value="{$user.id|default=''}">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                    <a class="btn btn-default" href="javascript:history.back(-1);">返回</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

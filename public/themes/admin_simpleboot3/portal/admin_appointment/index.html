@@ -1,0 +1,123 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {$lis}
+    </ul>
+    <form class="well form-inline margin-top-20" method="post" action="{:url('portal/adminAppointment/index')}">
+        姓名：
+        <input class="form-control" type="text" name="name" placeholder="请输捐献人名称" style="width: 150px;" value="{:input('request.uid')}">&nbsp;&nbsp;
+        电话：
+        <input class="form-control" placeholder="捐献人电话" type="text" name="mobile" style="width: 150px;" value="{:input('request.keyword')}">&nbsp;&nbsp;
+        <select id="province" class="form-control" style="width: 150px;" name="province">
+    　　　　　　　　<option index="-1" value="-1">所在省份</option>
+    　　　　　</select>&nbsp;&nbsp;
+        <select id="city" class="form-control" style="width: 150px;" name="city" >
+ 　　　　　　　　<option index='-1' value='-1'>所在城市</option>
+ 　　　　　　</select>
+        <select id="area" class="form-control" style="width: 150px;" name="area">
+ 　　　　　　　　<option index='-1' value='-1'>所在区/县</option>
+　　　　　　</select>&nbsp;&nbsp;
+        时间:
+        <input type="text" class="form-control js-date" name="start_time"
+               value="{$start_time|default=''}"
+               style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-date" name="end_time"
+               value="{$end_time|default=''}"
+               style="width: 140px;" autocomplete="off">&nbsp;&nbsp;
+        <input type="hidden" name="status" value="{$status}"/>
+        <input type="submit" class="btn btn-primary" value="搜索"/>
+        <a class="btn btn-danger" href="{:url('portal/adminAppointment/index')}">清空</a>
+    </form>
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>订单号</th>
+                <!-- <th>用户id</th> -->
+                <th>预约联系人</th>
+                <th>联系人手机</th>
+                <th>订单状态</th>
+                <th>重量区间</th>
+                <th>物流重量</th>
+                <th>入库重量</th>
+                <th>省</th>
+                <th>市</th>
+                <th>区</th>
+                <th>详细地址</th>
+                <th>期望上门时间</th>
+                <th>备注</th>
+                <th>创建时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <php>
+                $statuses=array('0'=>'订单异常','1'=>'待审核','2'=>'审核失败','3'=>'已通知物流收货','4'=>'物流已收货','5'=>'仓库已收货');
+            </php>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <!-- <td>{$vo.user_id}</td> -->
+                    <td>{$vo.name}</td>
+                    <td>{$vo.mobile}</td>
+                    <td><a href="javascript:parent.openIframeLayer('{:url('AdminAppointment/edit')}?id={$vo.id}','订单详情',{area: ['80%', '80%']});"><span class="label label-success">{$statuses[$vo.status]}</span></a></td>
+                    <td>{$weights[$vo.weight_interval]|default=''}</td>
+                    <td>{$vo.logistics_weight}</td>
+                    <td>{$vo.warehouse_weight}</td>
+                    <td>{$vo.province}</td>
+                    <td>{$vo.city}</td>
+                    <td>{$vo.area}</td>
+                    <td>{$vo.address}</td>
+                    <td>{:date('Y-m-d',$vo.appointment_time)}</td>
+                    <td>{$vo.remarks}</td>
+                    <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                    <td></td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    var province = {};
+    var city = {};
+    var area = {};
+    $.getJSON("__STATIC__/js/area.json", function(data){
+        province = data;
+        var html = '<option index="-1" value="-1">所在省份</option>';
+        $.each(province, function(index, val) {
+            html += '<option index="'+index+'" value="'+val.name+'">'+val.name+'</option>';
+        });
+        $('#province').html(html);
+    });
+
+    $('#province').change(function(event) {
+        var html = '<option index="-1" value="-1">所在城市</option>';
+        var index = $('#province option:selected').attr('index');
+        if (index != '-1') {
+            city = province[index]['city'];
+            $.each(city, function(index, val) {
+                html += '<option index="'+index+'" value="'+val.name+'">'+val.name+'</option>';
+            });
+        }
+        $('#city').html(html)
+        $('#area').html('<option index="-1" value="-1">所在区/县</option>')
+    });
+
+    $('#city').change(function(event) {
+        var html = '<option index="-1" value="-1">所在区/县</option>';
+        var index = $('#city option:selected').attr('index');
+        if (index != '-1') {
+            area = city[index]['area'];
+            $.each(area, function(index, val) {
+                html += '<option index="'+index+'" value="'+val+'">'+val+'</option>';
+            });
+        }
+        $('#area').html(html)
+    });
+</script>
+</body>
+</html>

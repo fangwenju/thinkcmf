@@ -1,0 +1,91 @@
+cmf\paginator\Bootstrap Object
+(
+    [simple:protected] => 
+    [items:protected] => think\Collection Object
+        (
+            [items:protected] => Array
+                (
+                    [0] => Array
+                        (
+                            [id] => 4
+                            [name] => 测测
+                            [mobile] => 13419541892
+                            [company] => 
+                            [address] => 111
+                            [content] => 全是
+                            [img] => portal/20171102/045244cb5a97d9db18362ce4ee4f48f2.jpg,default/20171102/badfcf6976ed0c5b2fb817ad54bc63fe.jpg
+                            [status] => 3
+                            [weight] => 0
+                            [remarks] => 
+                            [create_time] => 1509603523
+                        )
+
+                    [1] => Array
+                        (
+                            [id] => 3
+                            [name] => 方文局
+                            [mobile] => 17771740803
+                            [company] => 
+                            [address] => 11
+                            [content] => 1212
+                            [img] => portal/20171026/8fa22bc35c4dc24b1594b59bd27150d8.jpg
+                            [status] => 3
+                            [weight] => 0
+                            [remarks] => 
+                            [create_time] => 1509602988
+                        )
+
+                    [2] => Array
+                        (
+                            [id] => 2
+                            [name] => 方文局
+                            [mobile] => 17771740803
+                            [company] => 金软
+                            [address] => 详细地址
+                            [content] => 求助说明
+                            [img] => portal/20171026/8fa22bc35c4dc24b1594b59bd27150d8.jpg
+                            [status] => 3
+                            [weight] => 0
+                            [remarks] => 备注
+                            [create_time] => 1509601732
+                        )
+
+                    [3] => Array
+                        (
+                            [id] => 1
+                            [name] => 方
+                            [mobile] => 17771740803
+                            [company] => 
+                            [address] => 1111
+                            [content] => 说明
+                            [img] => 
+                            [status] => 3
+                            [weight] => 0
+                            [remarks] => 
+                            [create_time] => 1509592905
+                        )
+
+                )
+
+        )
+
+    [currentPage:protected] => 1
+    [lastPage:protected] => 1
+    [total:protected] => 4
+    [listRows:protected] => 20
+    [hasMore:protected] => 
+    [options:protected] => Array
+        (
+            [var_page] => page
+            [path] => /portal/admin_seek_help/index.html
+            [query] => Array
+                (
+                )
+
+            [fragment] => 
+            [type] => \cmf\paginator\Bootstrap
+            [list_rows] => 15
+        )
+
+    [nextItem:protected] => 
+)

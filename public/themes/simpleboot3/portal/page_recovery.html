@@ -1,0 +1,130 @@
+<include file="public@head"/>
+</head>
+<body>
+    <div class="wrap">
+        <form method="post" class="form-horizontal js-ajax-form" action="{:url('Page/appointment')}">
+            <div class="form-group">
+                <label for="input-to" class="col-sm-2 control-label"><span class="form-required">*</span>联系人</label>
+                <div class="col-md-6 col-sm-10">
+                    <input type="text" class="form-control" name="name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-subject" class="col-sm-2 control-label"><span class="form-required">*</span>手机号</label>
+                <div class="col-md-6 col-sm-10">
+                    <input id="mobile" type="mobile" class="form-control" name="mobile">
+                </div>
+            </div>
+
+            <if condition="cmf_get_current_user_id() == 0">
+            <div class="form-group">
+                <label for="input-subject" class="col-sm-2 control-label"><span class="form-required">*</span>手机验证码</label>
+                <div class="col-md-2 col-sm-10">
+                    <input type="text" class="form-control" name="verification_code">
+                </div>
+                <div class="col-md-2 col-sm-10">
+                    <div style="position: relative;">
+                        <input id="sendCode" type="button" height="38" width="160" value="获取验证码" />
+                    </div>
+                </div>
+            </div>
+            </if>
+
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>重量区间</label>
+                <div class="col-md-2 col-sm-4">
+                    <select class="form-control"  name="weight_interval">
+                        <foreach  name="weights" item="vo">
+             　　　　　　　　<option value='{$vo.id}'>{$vo.title}</option>
+                        </foreach>
+            　　　　</select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>所属地区</label>
+                <div class="col-md-2 col-sm-4">
+                    <select id="province" class="form-control" name="province">
+            　　　　　　　　<option index="-1" value="-1">所在省份</option>
+            　　　　　</select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <select id="city" class="form-control"  name="city" >
+         　　　　　　　　<option index='-1' value='-1'>所在城市</option>
+         　　　　　　</select>
+                </div>
+                <div class="col-md-2 col-sm-4">
+                    <select id="area" class="form-control"  name="area">
+         　　　　　　　　<option index='-1' value='-1'>所在区/县</option>
+        　　　　　　</select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>详细地址</label>
+                <div class="col-md-6 col-sm-10">
+                    <textarea class="form-control" name="address"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="input-content" class="col-sm-2 control-label"><span class="form-required">*</span>期望上门时间</label>
+                <div class="col-md-2 col-sm-10">
+                    <input type="text" class="form-control js-date" name="appointment_time" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <input type="hidden" name="introducer" value="{$introducer}">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">提交</button>
+                </div>
+            </div>
+        </form>
+    </div>
+<script src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    //地区三级联动
+    var province = {};
+    var city = {};
+    var area = {};
+    $.getJSON("__STATIC__/js/area.json", function(data){
+        province = data;
+        var html = '<option index="-1" value="-1">所在省份</option>';
+        $.each(province, function(index, val) {
+            html += '<option index="'+index+'" value="'+val.name+'">'+val.name+'</option>';
+        });
+        $('#province').html(html);
+    });
+
+    $('#province').change(function(event) {
+        var html = '<option index="-1" value="-1">所在城市</option>';
+        var index = $('#province option:selected').attr('index');
+        if (index != '-1') {
+            city = province[index]['city'];
+            $.each(city, function(index, val) {
+                html += '<option index="'+index+'" value="'+val.name+'">'+val.name+'</option>';
+            });
+        }
+        $('#city').html(html)
+        $('#area').html('<option index="-1" value="-1">所在区/县</option>')
+    });
+
+    $('#city').change(function(event) {
+        var html = '<option index="-1" value="-1">所在区/县</option>';
+        var index = $('#city option:selected').attr('index');
+        if (index != '-1') {
+            area = city[index]['area'];
+            $.each(area, function(index, val) {
+                html += '<option index="'+index+'" value="'+val+'">'+val+'</option>';
+            });
+        }
+        $('#area').html(html)
+    });
+</script>
+<script type="text/javascript">
+    //发送手机验证码
+    $('#sendCode').on('click', function(event) {
+        $.post("{:url('user/VerificationCode/send')}",{username:$('#mobile').val()},function(data){
+            console.log(data);
+        });
+    });
+</script>
+</body>
+</html>

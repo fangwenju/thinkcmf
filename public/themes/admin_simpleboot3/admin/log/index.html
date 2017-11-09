@@ -1,0 +1,47 @@
+<include file="public@header" />
+</head>
+<body>
+    <div class="wrap js-check-wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="{:url('user/index')}">操作记录</a></li>
+        </ul>
+        <form class="well form-inline margin-top-20" method="post" action="{:url('Log/index')}">
+            用户名:
+            <input type="text" class="form-control" name="user_name" style="width: 120px;" placeholder="请输入{:lang('USERNAME')}">&nbsp;&nbsp;
+            操作时间:
+            <input type="text" class="form-control js-date" name="start_time"
+                   value="{$start_time|default=''}"
+                   style="width: 140px;" autocomplete="off">-
+            <input type="text" class="form-control js-date" name="end_time"
+                   value="{$end_time|default=''}"
+                   style="width: 140px;" autocomplete="off">&nbsp;&nbsp;
+            <input type="submit" class="btn btn-primary" value="搜索"/>
+            <a class="btn btn-danger" href="{:url('Log/index')}">清空</a>
+        </form>
+        <table class="table table-hover table-bordered">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>用户名</th>
+                    <th>网络ip</th>
+                    <th>操作内容</th>
+                    <th>操作时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <foreach name="loglist" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.user_name}</td>
+                    <td>{$vo.ip}</td>
+                    <td>{$vo.action}</td>
+                    <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                </tr>
+                </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </div>
+    <script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

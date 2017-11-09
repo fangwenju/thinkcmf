@@ -1,0 +1,70 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap">
+    <ul class="nav nav-tabs">
+        {$lis}
+    </ul>
+    <form class="well form-inline margin-top-20" method="post" action="{:url('portal/AdminSeekHelp/index')}">
+        联系人：
+        <input class="form-control" type="text" name="name" placeholder="求助人名称" style="width: 150px;" value="{:input('request.uid')}">&nbsp;&nbsp;
+        电话：
+        <input class="form-control" placeholder="求助人电话" type="text" name="mobile" style="width: 150px;" value="{:input('request.keyword')}">&nbsp;&nbsp;
+        时间:
+        <input type="text" class="form-control js-date" name="start_time"
+               value="{$start_time|default=''}"
+               style="width: 140px;" autocomplete="off">-
+        <input type="text" class="form-control js-date" name="end_time"
+               value="{$end_time|default=''}"
+               style="width: 140px;" autocomplete="off">&nbsp;&nbsp;
+        <input type="submit" class="btn btn-primary" value="搜索"/>
+        <a class="btn btn-danger" href="{:url('portal/AdminSeekHelp/index')}">清空</a>
+    </form>
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>联系人</th>
+                <th>手机号</th>
+                <th>公司单位</th>
+                <th>详细地址</th>
+                <th>求助说明</th>
+                <th>凭证图片</th>
+                <th>状态</th>
+                <th>重量</th>
+                <th>备注</th>
+                <th>创建时间</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.mobile}</td>
+                    <td>{$vo.company}</td>
+                    <td>{$vo.address}</td>
+                    <td>{$vo.content}</td>
+                    <td>
+                        <foreach name="vo.img" item="path">
+                            <a href="javascript:parent.imagePreviewDialog('{:cmf_get_image_preview_url($path)}');">
+                            <img src="{:cmf_get_image_preview_url($path)}" style="height: 30px;"></a>
+                        </foreach>
+                    </td>
+                    <td>{$vo.status}</td>
+                    <td>{$vo.weight}</td>
+                    <td>{$vo.remarks}</td>
+                    <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                    <td></td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

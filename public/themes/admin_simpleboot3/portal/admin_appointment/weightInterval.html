@@ -1,0 +1,35 @@
+<include file="public@header"/>
+</head>
+<body>
+    <div class="wrap">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#" data-toggle="tab">重量区间列表</a></li>
+            <li><a href="{:url('AdminAppointment/weightAdd')}">新增重量区间</a></li>
+        </ul>
+    <form method="post" class="js-ajax-form">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th>重量区间</th>
+                <th>状态</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <php>
+                $statuses=array('0'=>'显示','1'=>'隐藏');
+            </php>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.title}</td>
+                    <td><span class="label label-success">{$statuses[$vo.ishide]}</span></td>
+                    <td><a href="{:url('AdminAppointment/weightEdit')}?id={$vo.id}">编辑</a></td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="pagination">{$page}</div>
+    </form>
+    </div>
+</body>
+</html>

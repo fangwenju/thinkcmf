@@ -1,0 +1,65 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <div class="table-actions">
+        预约订单信息
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">预约联系人</label>
+            {$list.name}
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">手机号</label>
+            {$list.mobile}
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">重量区间</label>
+        {$list.weight_interval}
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">物流记重</label>
+        <if condition="$list.logistics_weight == 0">
+            待物流录入
+        <else />
+            {$list.logistics_weight}KG
+        </if>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">入库记重</label>
+        <if condition="$list.warehouse_weight == 0">
+            待仓库录入
+        <else />
+            {$list.warehouse_weight}KG
+        </if>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">详细地址</label>
+        {$list.province}{$list.city}{$list.area}{$list.address}
+    </div>
+        <php>
+            $statuses=array('0'=>'订单异常','1'=>'待审核','2'=>'审核失败','3'=>'已通知物流收货','4'=>'物流已收货','5'=>'仓库已收货');
+        </php>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">状态</label>
+        {$statuses[$list.status]}
+    </div>
+    <div class="form-group">
+        <label class="col-sm-1 control-label">预约时间</label>
+        {:date('Y-m-d H:i:s',$list.create_time)}
+    </div>
+    <hr>
+    <if condition="$list.status eq 1">
+        <form action="{:url('portal/adminAppointment/edit')}" method="post" class="js-ajax-form">
+            <input type="hidden" name="id" value="{$list.id}">
+            <input type="radio" name="status" value="3" checked="checked">通过预约&nbsp;&nbsp;
+            <input type="radio" name="status" value="2">拒绝预约
+            <div class="table-actions">
+                <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">确认修改</button>
+            </div>
+        </form>
+    </if>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>
